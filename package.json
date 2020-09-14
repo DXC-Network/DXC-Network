@@ -2,12 +2,12 @@
   "name": "dxc-dsbot-web-redirect",
   "version": "1.0.0",
   "description": "To redirect traffic from heroku site to dxc bot works page",
-  "main": "web-redirect.js",
+  "main": "WebRedirect.js",
   "scripts": {
-    "start": "node web-redirect.js",
-    "dev": "nodemon web-redirect.js",
-    "dev2": "pm2 start web-redirect.js",
-    "dev2stop": "pm2 stop web-redirect.js"
+    "start": "node WebRedirect.js",
+    "dev": "nodemon WebRedirect.js",
+    "dev2": "pm2 start WebRedirect.js",
+    "dev2stop": "pm2 stop WebRedirect.js"
   },
   "dependencies": {
     "dotenv": "^8.2.0",
