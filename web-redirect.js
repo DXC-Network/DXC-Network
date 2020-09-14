@@ -1,47 +1,49 @@
 const http = require('http'); require('dotenv').config(); /// nodejs http and env required to make this work (will involve ENVs WEB_HOST and WEB_SELECT)
 
-/// [DXC Main Bots] + Defaults setup for hostname and port for web redirection
-const defaultSite    = "https://discord.com/invite/xaE65tz/"; /// Discord Server C3 Invite to be used when env.WEB_HOST is undefined
-const siteForBotHEC  = "https://support.dxchiam.com/";        /// [MainBotHEC] redirect as of now
-const siteForBotDXC  = "http://www.dxcellon.com/bots/";       /// [PersonalBotDXC] redirect as of now
-const dxcDefaultPort = 3920;                                  /// Default Ports for [MainBotHEC] and [PersonalBotDXC] - FIXED VAR DO NOT MODIFY
+/// START OF DXC NETWORK BOT DEFAULT DECLARATION
+/// [DXC Main Bots] [Hosts undecided] [Ports: 392xx ( HEC: xxx41 / DXC: xxx59 )] - FIXED BY DXC
+const siteForBotHEC = "https://support.dxchiam.com/";  const portForBotHEC = 39241; /// [MainBotHEC] Default Port; Site Redirect as of now
+const siteForBotDXC = "http://www.dxcellon.com/bots/"; const portForBotDXC = 39259; /// [PersonalBotDXC] Default Port; Site Redirect as of now
+/// [Old Misc Bots (Bot Group 19)] [Hosts: "old" hosts] [Ports: 199xx ( H:19X: xxx42 / E:19Y: xxx55 / C:19Z: xxx67 )] - FIXED BY DXC
+const oldSiteDXCH = "https://old.dxchiam.com/";  const oldPort19X = 19942; /// [MiscBot19X] Default Site and Port - FIXED VAR DO NOT MODIFY
+const oldSiteDXCE = "https://old.dxcellon.com/"; const oldPort19Y = 19955; /// [MiscBot19Y] Default Site and Port - FIXED VAR DO NOT MODIFY
+const oldSiteDXCC = "https://old.dxcc.sg/";      const oldPort19Z = 19967; /// [MiscBot19Z] Default Site and Port - FIXED VAR DO NOT MODIFY
+/// [New Misc Bots (Bot Group 20)] [Hosts: "www" hosts] [Ports: 207xx ( H:20A: xxx12 / E:20B: xxx25 / C:20C: xxx37 )] - FIXED BY DXC
+const newSiteDXCH = "http://www.dxchiam.com/";  const newPort20A = 20712; /// [MiscBot20A] Default Site and Port - FIXED VAR DO NOT MODIFY
+const newSiteDXCE = "http://www.dxcellon.com/"; const newPort20B = 20725; /// [MiscBot20B] Default Site and Port - FIXED VAR DO NOT MODIFY
+const newSiteDXCC = "http://www.dxcc.sg/";      const newPort20C = 20737; /// [MiscBot20C] Default Site and Port - FIXED VAR DO NOT MODIFY
+/// END OF DXC NETWORK BOT DEFAULT DECLARATION
 
-/// [Old Misc Bots (Bot Group 19)] Host: old and Ports: 199xx ( H:19X: xxx42 / E:19Y: xxx55 / C:19Z: xxx67 ) - FIXED BY DXC
-const oldSiteDXChiam  = "https://old.dxchiam.com/";  const oldPort19X = 19942; /// [MiscBot19X] Default Site and Port - FIXED VAR DO NOT MODIFY
-const oldSiteDXCellon = "https://old.dxcellon.com/"; const oldPort19Y = 19955; /// [MiscBot19Y] Default Site and Port - FIXED VAR DO NOT MODIFY
-const oldSiteDXCC     = "https://old.dxcc.sg/";      const oldPort19Z = 19967; /// [MiscBot19Z] Default Site and Port - FIXED VAR DO NOT MODIFY
+/// START OF DEFAULT REDIRECT DECLARATION
+/// Defaults setup for hostname and port for web redirection - FIXED BY DXC
+const defaultSite = "https://discord.com/invite/xaE65tz/"; /// Default Host to redirect if env.WEB_HOST and env.WEB_SELECT is undefined - FIXED VAR DO NOT MODIFY
+const defaultPort = 3920;                                  /// Default Port to host locally if env.PORT and env.WEB_SELECT is undefined - FIXED VAR DO NOT MODIFY
+/// END OF DEFAULT REDIRECT DECLARATION
 
-/// [New Misc Bots (Bot Group 20)] Host: old and Ports: 207xx ( H:20A: xxx12 / E:20B: xxx25 / C:20C: xxx37 ) - FIXED BY DXC
-const newSiteDXChiam  = "http://www.dxchiam.com/";  const newPort20A = 20712; /// [MiscBot20A] Default Site and Port - FIXED VAR DO NOT MODIFY
-const newSiteDXCellon = "http://www.dxcellon.com/"; const newPort20B = 20725; /// [MiscBot20B] Default Site and Port - FIXED VAR DO NOT MODIFY
-const newSiteDXCC     = "http://www.dxcc.sg/";      const newPort20C = 20737; /// [MiscBot20C] Default Site and Port - FIXED VAR DO NOT MODIFY
+/// START OF SELECTION
+/// Declaration of vars SELECTOR; selectedSite to redirect; selectedPort to host locally; For Logical Use
+const SELECTOR = (process.env.WEB_SELECT || ""); /// SELECTOR as env.WEB_SELECT
+selectedSite = defaultSite;                      /// defaultSite as selectedSite
+selectedPort = defaultPort;                      /// defaultPort as selectedPort
+/// Selection Phase: Only if SELECTOR is well defined
+if (SELECTOR=="HEC"){      selectedSite = siteForBotHEC; selectedPort = portForBotHEC; }
+else if (SELECTOR=="DXC"){ selectedSite = siteForBotDXC; selectedPort = portForBotDXC; }
+else if (SELECTOR=="19X"){ selectedSite = oldSiteDXCH;   selectedPort = oldPort19X; }
+else if (SELECTOR=="19Y"){ selectedSite = oldSiteDXCE;   selectedPort = oldPort19Y; }
+else if (SELECTOR=="19Z"){ selectedSite = oldSiteDXCC;   selectedPort = oldPort19Z; }
+else if (SELECTOR=="20A"){ selectedSite = newSiteDXCH;   selectedPort = newPort20A; }
+else if (SELECTOR=="20B"){ selectedSite = newSiteDXCE;   selectedPort = newPort20B; }
+else if (SELECTOR=="20C"){ selectedSite = newSiteDXCC;   selectedPort = newPort20C; }
+///
+HOSTNAME  = (process.env.WEB_HOST || selectedSite);
+LOCALPORT = (process.env.PORT || selectedPort);
+/// END OF SELECTION
 
-/// Phase One = Setting Everything to Defaults
-hostname       = (process.env.WEB_HOST || defaultSite); /// Default Site to Redirect in General - FIXED VAR DO NOT MODIFY
-port           = (process.env.PORT || dxcDefaultPort);  /// Default Port to Host Locally in General - FIXED VAR DO NOT MODIFY
-
-/// Phase Two = If ENV WEB_SELECT Exists
-const selector = (process.env.WEB_SELECT || "");
-
-/// For Main Bots
-if (selector=="HEC"){      hostname = siteForBotHEC; }
-else if (selector=="DXC"){ hostname = siteForBotDXC; }
-
-/// For Misc Bots
-else if (selector=="19X"){ hostname = oldSiteDXChiam;  port = (process.env.PORT || oldPort19X); } /// Redirects to old.dxchiam.com
-else if (selector=="19Y"){ hostname = oldSiteDXCellon; port = (process.env.PORT || oldPort19Y); } /// Redirects to old.dxcellon.com
-else if (selector=="19Z"){ hostname = oldSiteDXCC;     port = (process.env.PORT || oldPort19Z); } /// Redirects to old.dxcc.sg
-else if (selector=="20A"){ hostname = newSiteDXChiam;  port = (process.env.PORT || newPort20A); } /// Redirects to www.dxchiam.com
-else if (selector=="20B"){ hostname = newSiteDXCellon; port = (process.env.PORT || newPort20B); } /// Redirects to www.dxcellon.com
-else if (selector=="20C"){ hostname = newSiteDXCC;     port = (process.env.PORT || newPort20C); } /// Redirects to www.dxcc.sg
-
-/// The Redirect
-const server = http.createServer((req, res) => {
-  res.writeHead(302, {'Location' : `${hostname}`});
-  res.end();
-});
-
-/// The Log
-server.listen(port, () => {
-  console.log(`[LOG] Server running at port [${port}] to redirect to [${hostname}]`);
-});
+module.exports={
+  WebRedirect(){
+    /// START OF REDIRECT
+    const SERVER = http.createServer((reg,res) => { res.writeHead(302, {'Location' : `${HOSTNAME}`}) };); /// The Redirect
+    SERVER.listen(LOCALPORT, () => { console.log(`[LOG] Web Redirection to website [${HOSTNAME}] running at [${LOCALPORT}]`) };);
+    /// END OF REDIRECT
+  }
+}
