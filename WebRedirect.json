@@ -1,0 +1,42 @@
+[
+  {
+    "Bot": "HEC",
+    "Site": "https://discord.com/invite/xaE65tz",
+    "Port": 39241
+  },
+  {
+    "Bot": "19X",
+    "Site": "https://old.dxchiam.com",
+    "Port": 19942
+  },
+  {
+    "Bot": "19Y",
+    "Site": "https://old.dxcellon.com",
+    "Port": 19955
+  },
+  {
+    "Bot": "19Z",
+    "Site": "https://old.dxcc.sg",
+    "Port": 19967
+  },
+  {
+    "Bot": "20A",
+    "Site": "https://www.dxchiam.com",
+    "Port": 20712
+  },
+  {
+    "Bot": "20B",
+    "Site": "https://www.dxcellon.com",
+    "Port": 20725
+  },
+  {
+    "Bot": "20C",
+    "Site": "https://www.dxcc.sg",
+    "Port": 20737
+  },
+  {
+    "Bot": "DXC",
+    "Site": "https://discord.com/invite/xaE65tz",
+    "Port": 39259
+  }
+]
